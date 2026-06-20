@@ -23,7 +23,6 @@ build/
 # 忽略你代码中生成的 Excel 和 PDF 文件
 *.xlsx
 *.xls
-*.pdf
 # 忽略生成的 CSV 数据文件
 *.csv
 

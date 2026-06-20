@@ -142,14 +142,14 @@ def main(cert_password):
         prefix = email.split('@')[0]
 
         # 保存私钥
-        save_pem(f"{base_dir}/{prefix}_private_key.pem", user_key.private_bytes(
+        save_pem(f"{base_dir}/{prefix}_ca_private_key.pem", user_key.private_bytes(
             encoding=serialization.Encoding.PEM,
             format=serialization.PrivateFormat.TraditionalOpenSSL,
             encryption_algorithm=serialization.NoEncryption()
         ))
 
         # 保存证书
-        save_pem(f"{base_dir}/{prefix}_public_key.pem", user_cert.public_bytes(serialization.Encoding.PEM))
+        save_pem(f"{base_dir}/{prefix}_ca_public_key.pem", user_cert.public_bytes(serialization.Encoding.PEM))
 
         # 保存 P12 (PKCS12) - 方便导入浏览器或 Adobe
         from cryptography.hazmat.primitives.serialization.pkcs12 import serialize_key_and_certificates
@@ -160,7 +160,7 @@ def main(cert_password):
             cas=[inter_cert, root_cert], # 包含完整的信任链
             encryption_algorithm=serialization.BestAvailableEncryption(f"{cert_password}".encode('utf-8'))
         )
-        save_pem(f"{base_dir}/{prefix}_cert_bundle.p12", p12_data)
+        save_pem(f"{base_dir}/{prefix}_ca_cert_bundle.p12", p12_data)
 
     print("\n--- 全部完成！请在 'ca' 文件夹中查看生成的文件 ---")
 
