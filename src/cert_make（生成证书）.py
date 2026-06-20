@@ -76,7 +76,7 @@ def save_pem(file_path, data):
 # ==========================================
 # 4. 主执行流程 (Main Execution Flow)
 # ==========================================
-def main():
+def main(cert_password):
     print("--- 开始构建证书体系 ---")
 
     # 【第一步】生成根 CA 的密钥和自签名证书
@@ -158,7 +158,7 @@ def main():
             key=user_key,
             cert=user_cert,
             cas=[inter_cert, root_cert], # 包含完整的信任链
-            encryption_algorithm=serialization.NoEncryption()
+            encryption_algorithm=serialization.BestAvailableEncryption(f"{cert_password}".encode('utf-8'))
         )
         save_pem(f"{base_dir}/{prefix}_cert_bundle.p12", p12_data)
 
@@ -166,4 +166,5 @@ def main():
 
 # 启动程序
 if __name__ == "__main__":
-    main()
+    cert_password = "123456"
+    main(cert_password = cert_password)

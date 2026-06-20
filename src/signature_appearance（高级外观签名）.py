@@ -2,18 +2,14 @@
 # *-* coding: utf-8 *-*
 import sys
 import datetime
+import os
 from cryptography.hazmat import backends
 from cryptography.hazmat.primitives.serialization import pkcs12
 
 from endesive.pdf import cms
 
-# from endesive.pdf import cmsn as cms
 
-# import logging
-# logging.basicConfig(level=logging.DEBUG)
-
-
-def main():
+def signature_appearance(input_pdf_path, cert_path, cert_password, signature_img):
     base_dir = "/Users/teacher/Downloads/endesive-master/endesive_examples/src/"
     date = datetime.datetime.utcnow() - datetime.timedelta(hours=12)
     date = date.strftime("D:%Y%m%d%H%M%S+00'00'")
@@ -36,7 +32,7 @@ def main():
         # Outline is the colour used to draw both the border and the text
         "signature_appearance": {
             'background': [0.75, 0.8, 0.95],
-            'icon': f'{base_dir}/signature_test.png',
+            'icon': f'{signature_img}',
             'outline': [0.2, 0.3, 0.5],
             'border': 2,
             'labels': True,
@@ -49,19 +45,32 @@ def main():
         "reason": "Dokument podpisany cyfrowo aą cć eę lł nń oó sś zż zź",
         "password": "1234",
     }
-    with open(f"{base_dir}/ca/demo2_user1.p12", "rb") as fp:
+    with open(cert_path, "rb") as fp:
         p12 = pkcs12.load_key_and_certificates(
-            fp.read(), b"1234", backends.default_backend()
+            fp.read(),  f"{cert_password}".encode('utf-8'), backends.default_backend()
         )
-    fname = f"{base_dir}/pdf_forms/blank_form.pdf"
-    if len(sys.argv) > 1:
-        fname = sys.argv[1]
-    datau = open(fname, "rb").read()
+    
+
+    datau = open(input_pdf_path, "rb").read()
     datas = cms.sign(datau, dct, p12[0], p12[1], p12[2], "sha256")
-    fname = fname.replace(".pdf", "-signature_appearance.pdf")
-    with open(fname, "wb") as fp:
+    output_pdf_path = input_pdf_path.replace(".pdf", "-signature_appearance.pdf")
+    with open(output_pdf_path, "wb") as fp:
         fp.write(datau)
         fp.write(datas)
 
+    print("--------------签名完成--------------")
 
-main()
+if __name__ == "__main__":
+    BASE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../')
+
+    input_pdf_path = f"{BASE_DIR}/pdf/test.pdf"
+    cert_path=f"{BASE_DIR}/cert_auth/demo1_cert_bundle.p12"
+    cert_password = "123456"
+    signature_img = f"{BASE_DIR}/assets/images/signature_liudehua.png"
+
+    signature_appearance(
+        input_pdf_path = input_pdf_path,
+        cert_path = cert_path,
+        cert_password = cert_password,
+        signature_img=signature_img
+    )
