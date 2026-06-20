@@ -1,6 +1,5 @@
 #!/usr/bin/env vpython3
 # *-* coding: utf-8 *-*
-import sys
 import datetime
 import os
 from cryptography.hazmat import backends
@@ -9,7 +8,7 @@ from cryptography.hazmat.primitives.serialization import pkcs12
 from endesive.pdf import cms
 
 
-def signature_appearance(input_pdf_path, cert_path, cert_password, signature_img):
+def signature_appearance(input_pdf_path, cert_path, cert_password, sign_img):
     base_dir = "/Users/teacher/Downloads/endesive-master/endesive_examples/src/"
     date = datetime.datetime.utcnow() - datetime.timedelta(hours=12)
     date = date.strftime("D:%Y%m%d%H%M%S+00'00'")
@@ -32,7 +31,7 @@ def signature_appearance(input_pdf_path, cert_path, cert_password, signature_img
         # Outline is the colour used to draw both the border and the text
         "signature_appearance": {
             'background': [0.75, 0.8, 0.95],
-            'icon': f'{signature_img}',
+            'icon': f'{sign_img}',
             'outline': [0.2, 0.3, 0.5],
             'border': 2,
             'labels': True,
@@ -47,7 +46,9 @@ def signature_appearance(input_pdf_path, cert_path, cert_password, signature_img
     }
     with open(cert_path, "rb") as fp:
         p12 = pkcs12.load_key_and_certificates(
-            fp.read(),  f"{cert_password}".encode('utf-8'), backends.default_backend()
+            fp.read(),  
+            f"{cert_password}".encode('utf-8'), 
+            backends.default_backend()
         )
     
 
@@ -66,11 +67,11 @@ if __name__ == "__main__":
     input_pdf_path = f"{BASE_DIR}/pdf/test.pdf"
     cert_path=f"{BASE_DIR}/cert_auth/demo1_cert_bundle.p12"
     cert_password = "123456"
-    signature_img = f"{BASE_DIR}/assets/images/signature_liudehua.png"
+    sign_img = f"{BASE_DIR}/assets/images/signature_liudehua.png"
 
     signature_appearance(
         input_pdf_path = input_pdf_path,
         cert_path = cert_path,
         cert_password = cert_password,
-        signature_img=signature_img
+        sign_img=sign_img
     )
