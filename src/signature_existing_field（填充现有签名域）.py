@@ -21,6 +21,10 @@ def signature_existing_field(input_pdf_path, cert_path, cert_password, sign_img)
         #"auto_sigfield": False,
         #"sigandcertify": False,
         #"signaturebox": (0, 0, 590, 155),
+
+        # "signaturebox": (72, 396, 360, 468),
+        # "signform": False,
+
         "signform": True,
         "sigfield": "Signature",
         "signature_manual": [

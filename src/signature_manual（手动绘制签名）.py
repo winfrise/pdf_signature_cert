@@ -62,7 +62,7 @@ def signature_manual(input_pdf_path, cert_path, cert_password, sign_img):
         "contact": "mak@trisoft.com.pl",
         "location": "Szczecin",
         "signingdate": date,
-        "reason": "Dokument podpisany cyfrowo aą cć eę lł nń oó sś zż zź",
+        "reason": "Dokument podpisany cyfrowo",
         "password": "1234",
     }
     with open(f"{cert_path}", "rb") as fp:

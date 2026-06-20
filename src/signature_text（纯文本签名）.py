@@ -20,6 +20,10 @@ def signature_text(input_pdf_path, cert_path, cert_password, sign_img):
         #"auto_sigfield": False,
         #"sigandcertify": False,
         #"signaturebox": (0, 0, 590, 155),
+        
+        # "signaturebox": (72, 396, 360, 468),
+        # "signform": False,
+
         "signform": True,
         "sigfield": "Signature",
         #             Text will be in the default font
@@ -47,18 +51,18 @@ def signature_text(input_pdf_path, cert_path, cert_password, sign_img):
         )
     datau = open(input_pdf_path, "rb").read()
     datas = cms.sign(datau, dct, p12[0], p12[1], p12[2], "sha256")
-    output_pdf_path = input_pdf_path.replace(".pdf", "-signature-text.pdf")
+    output_pdf_path = input_pdf_path.replace(".pdf", "-signature_text.pdf")
     with open(output_pdf_path, "wb") as fp:
         fp.write(datau)
         fp.write(datas)
 
     print("--------------签名完成--------------")
-    
+
 
 if __name__ == "__main__":
     BASE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../')
 
-    input_pdf_path = f"{BASE_DIR}/pdf/test.pdf"
+    input_pdf_path = f"{BASE_DIR}/pdf/blank_form.pdf"
     cert_path=f"{BASE_DIR}/cert_auth/demo1_cert_bundle.p12"
     cert_password = "123456"
     sign_img = f"{BASE_DIR}/assets/images/signature_liudehua.png"
