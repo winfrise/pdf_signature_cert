@@ -21,11 +21,11 @@ def signature_text(input_pdf_path, cert_path, cert_password, sign_img):
         #"sigandcertify": False,
         #"signaturebox": (0, 0, 590, 155),
         
-        # "signaturebox": (72, 396, 360, 468),
-        # "signform": False,
+        "signaturebox": (72, 396, 360, 468),
+        "signform": False,
 
-        "signform": True,
-        "sigfield": "Signature",
+        # "signform": True,
+        # "sigfield": "Signature",
         #             Text will be in the default font
         "signature": 'Signed field!',
 
@@ -62,7 +62,7 @@ def signature_text(input_pdf_path, cert_path, cert_password, sign_img):
 if __name__ == "__main__":
     BASE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../')
 
-    input_pdf_path = f"{BASE_DIR}/pdf/blank_form.pdf"
+    input_pdf_path = f"{BASE_DIR}/pdf/test.pdf"
     cert_path=f"{BASE_DIR}/cert_auth/demo1_cert_bundle.p12"
     cert_password = "123456"
     sign_img = f"{BASE_DIR}/assets/images/signature_liudehua.png"
