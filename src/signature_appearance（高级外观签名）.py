@@ -65,7 +65,7 @@ if __name__ == "__main__":
     BASE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../')
 
     input_pdf_path = f"{BASE_DIR}/pdf/test.pdf"
-    cert_path=f"{BASE_DIR}/cert_auth/demo1_zfb_cert_bundle.p12"
+    cert_path=f"{BASE_DIR}/cert_auth/zfb_cert_bundle.p12"
     cert_password = "123456"
     sign_img = f"{BASE_DIR}/assets/images/signature_liudehua.png"
 

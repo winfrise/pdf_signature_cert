@@ -95,15 +95,14 @@ def main(cert_password):
 
     # 【第二步】生成用户证书
     # 注意：这里移除了中间CA，直接由根CA签发用户证书
-    users = ["demo1@trisoft.com.pl"]
-    for email in users:
+    users = ["支付宝支付科技有限公司"]
+    for user in users:
         # 2.1 生成用户密钥
         user_key = generate_rsa_key()
 
         # 2.2 准备用户身份信息
         user_name = x509.Name([
-            # x509.NameAttribute(NameOID.EMAIL_ADDRESS, email),
-            # x509.NameAttribute(NameOID.COMMON_NAME, email),
+            x509.NameAttribute(NameOID.COMMON_NAME, user),
             x509.NameAttribute(NameOID.ORGANIZATION_NAME, u"TriSoft User"),
         ])
 
@@ -119,28 +118,27 @@ def main(cert_password):
 
         # 2.4 保存文件
         base_dir = "cert_auth"
-        prefix = email.split('@')[0]
 
         # 保存用户私钥
-        save_pem(f"{base_dir}/{prefix}_zfb_private_key.pem", user_key.private_bytes(
+        save_pem(f"{base_dir}/zfb_private_key.pem", user_key.private_bytes(
             encoding=serialization.Encoding.PEM,
             format=serialization.PrivateFormat.TraditionalOpenSSL,
             encryption_algorithm=serialization.NoEncryption()
         ))
 
         # 保存用户证书
-        save_pem(f"{base_dir}/{prefix}_zfb_public_key.pem", user_cert.public_bytes(serialization.Encoding.PEM))
+        save_pem(f"{base_dir}/zfb_public_key.pem", user_cert.public_bytes(serialization.Encoding.PEM))
 
         # 保存 P12 (PKCS12) 文件，包含完整的信任链
         from cryptography.hazmat.primitives.serialization.pkcs12 import serialize_key_and_certificates
         p12_data = serialize_key_and_certificates(
-            name=f"{email}".encode('utf-8'),
+            name=f"{user}".encode('utf-8'),
             key=user_key,
             cert=user_cert,
             cas=[root_cert], # 证书链中只包含根证书
             encryption_algorithm=serialization.BestAvailableEncryption(f"{cert_password}".encode('utf-8'))
         )
-        save_pem(f"{base_dir}/{prefix}_zfb_cert_bundle.p12", p12_data)
+        save_pem(f"{base_dir}/zfb_cert_bundle.p12", p12_data)
 
     print("\n--- 全部完成！请在 'cert_auth' 文件夹中查看生成的文件 ---")
 

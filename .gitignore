@@ -26,6 +26,8 @@ build/
 # 忽略生成的 CSV 数据文件
 *.csv
 
+/cert_auth
+
 # --- 操作系统产生的垃圾文件 ---
 # Windows
 Thumbs.db
