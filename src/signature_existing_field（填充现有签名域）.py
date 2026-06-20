@@ -1,20 +1,15 @@
 #!/usr/bin/env vpython3
 # *-* coding: utf-8 *-*
-import sys
+import os
 import datetime
 from cryptography.hazmat import backends
 from cryptography.hazmat.primitives.serialization import pkcs12
 
 from endesive.pdf import cms
 
-# from endesive.pdf import cmsn as cms
-
-# import logging
-# logging.basicConfig(level=logging.DEBUG)
 
 
-def main():
-    base_dir = "/Users/teacher/Downloads/endesive-master/endesive_examples/src/"
+def signature_existing_field(input_pdf_path, cert_path, cert_password, sign_img):
 
     date = datetime.datetime.utcnow() - datetime.timedelta(hours=12)
     date = date.strftime("D:%Y%m%d%H%M%S+00'00'")
@@ -56,7 +51,7 @@ def main():
             ],
         #   key: name used in image directives
         # value: PIL Image object or path to image file
-        "manual_images": {'sig0': f'{base_dir}/signature_test.png'},
+        "manual_images": {'sig0': f'{sign_img}'},
         #   key: name used in font directives
         # value: path to TTF Font file
         "manual_fonts": {},
@@ -68,19 +63,33 @@ def main():
         "password": "1234",
     }
    
-    with open(f"{base_dir}/ca/demo2_user1.p12", "rb") as fp:
+    with open(f"{cert_path}", "rb") as fp:
         p12 = pkcs12.load_key_and_certificates(
-            fp.read(), b"1234", backends.default_backend()
+            fp.read(), 
+            f"{cert_password}".encode('utf-8'), 
+            backends.default_backend()
         )
-    fname = f"/Users/teacher/Downloads/百度网盘下载/水/test1.pdf"
-    if len(sys.argv) > 1:
-        fname = sys.argv[1]
-    datau = open(fname, "rb").read()
+
+    datau = open(input_pdf_path, "rb").read()
     datas = cms.sign(datau, dct, p12[0], p12[1], p12[2], "sha256")
-    fname = fname.replace(".pdf", "-signature-existing-field.pdf")
+    fname = input_pdf_path.replace(".pdf", "-signature-existing-field.pdf")
     with open(fname, "wb") as fp:
         fp.write(datau)
         fp.write(datas)
 
+    print("--------------签名完成--------------")
 
-main()
+if __name__ == "__main__":
+    BASE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../')
+
+    input_pdf_path = f"{BASE_DIR}/pdf/test.pdf"
+    cert_path=f"{BASE_DIR}/cert_auth/demo1_cert_bundle.p12"
+    cert_password = "123456"
+    sign_img = f"{BASE_DIR}/assets/images/signature_liudehua.png"
+
+    signature_existing_field(
+        input_pdf_path = input_pdf_path,
+        cert_path = cert_path,
+        cert_password = cert_password,
+        sign_img=sign_img
+    )
