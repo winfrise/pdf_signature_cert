@@ -138,7 +138,7 @@ def main():
         )
 
         # 3.4 保存文件 (模拟原脚本的文件结构)
-        base_dir = "ca"
+        base_dir = "cert_auth"
         prefix = email.split('@')[0]
 
         # 保存私钥
