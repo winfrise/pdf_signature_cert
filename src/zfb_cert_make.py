@@ -112,7 +112,7 @@ def main(cert_password):
             issuer_key=root_key,   # 使用根 CA 的私钥
             subject_key=user_key.public_key(),
             is_ca=False, # 这不是 CA
-            days_valid=30
+            days_valid=1
         )
 
         # 2.4 保存文件
