@@ -9,7 +9,6 @@ from endesive.pdf import cms
 
 
 def signature_appearance(input_pdf_path, cert_path, cert_password, sign_img):
-    base_dir = "/Users/teacher/Downloads/endesive-master/endesive_examples/src/"
     date = datetime.datetime.utcnow() - datetime.timedelta(hours=12)
     date = date.strftime("D:%Y%m%d%H%M%S+00'00'")
     dct = {
