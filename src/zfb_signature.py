@@ -9,36 +9,17 @@ from endesive.pdf import cms
 
 
 def signature_appearance(input_pdf_path, cert_path, cert_password, sign_img):
-    date = datetime.datetime.utcnow() - datetime.timedelta(hours=12)
+    date = datetime.datetime.utcnow()
     date = date.strftime("D:%Y%m%d%H%M%S+00'00'")
     dct = {
         "aligned": 0,
-        "sigflags": 3,
+        "sigflags": 3,  
         "sigflagsft": 132,
-        "sigpage": 0,
-        "auto_sigfield": True,
-        #"sigandcertify": False,
-        "signaturebox": (72, 396, 360, 468),
+        "sigpage": 0,  # 指定签名显示在哪一页。0 代表 第一页。
+        "auto_sigfield": True,  # 自动创建签名字段。
+        "sigandcertify": True,
         "signform": False,
-        "sigfield": "Signature",
-
-        # Text will be in the default font
-        # Fields in the list display will be included in the text listing
-        # Icon and background can both be set to images by having their
-        #   value be a path to a file or a PIL Image object
-        # If background is a list it is considered to be an opaque RGB colour
-        # Outline is the colour used to draw both the border and the text
-        "signature_appearance": {
-            'background': [0.75, 0.8, 0.95],
-            'icon': f'{sign_img}',
-            'outline': [0.2, 0.3, 0.5],
-            'border': 2,
-            'labels': True,
-            'display': 'CN,DN,date,contact,reason,location'.split(','),
-            },
-
-        "contact": "mak@trisoft.com.pl",
-        "location": "Szczecin",
+        "sigfield": "Signature",  # 签名字段的名称
         "signingdate": date,
         "reason": "电子合同签名",
         "password": "1234",
