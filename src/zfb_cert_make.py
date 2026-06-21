@@ -103,7 +103,6 @@ def main(cert_password):
         # 2.2 准备用户身份信息
         user_name = x509.Name([
             x509.NameAttribute(NameOID.COMMON_NAME, user),
-            # x509.NameAttribute(NameOID.ORGANIZATION_NAME, u"TriSoft User"),
         ])
 
         # 2.3 由根 CA (天威诚信) 直接签发用户证书
